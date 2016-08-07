@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="me.abhrajit.hackernewsreader">
+
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -18,22 +19,31 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".service.NewsGcmService"
-            android:permission="com.google.android.gms.permission.BIND_NETWORK_TASK_SERVICE"
-            android:exported="true">
+        <service
+            android:name=".service.NewsGcmService"
+            android:exported="true"
+            android:permission="com.google.android.gms.permission.BIND_NETWORK_TASK_SERVICE">
             <intent-filter>
-                <action android:name="com.google.android.gms.gcm.ACTION_TASK_READY"/>
+                <action android:name="com.google.android.gms.gcm.ACTION_TASK_READY" />
             </intent-filter>
         </service>
-
-
         <service android:name=".service.NewsIntentService" />
 
         <provider
             android:name=".data.generated.HackerNewsProvider"
             android:authorities="me.abhrajit.hackernewsreader.data.HackerNewsProvider"
-            android:grantUriPermissions="true"
-            android:exported="true" />
+            android:exported="true"
+            android:grantUriPermissions="true" />
+
+        <activity
+            android:name=".DetailView"
+            android:label="@string/title_activity_detail_view"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="me.abhrajit.hackernewsreader.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

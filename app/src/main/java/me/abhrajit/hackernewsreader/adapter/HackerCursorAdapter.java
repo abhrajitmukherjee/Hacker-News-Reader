@@ -17,7 +17,10 @@ package me.abhrajit.hackernewsreader.adapter;
 */
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +30,9 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.Random;
+
+import me.abhrajit.hackernewsreader.DetailView;
 import me.abhrajit.hackernewsreader.R;
 import me.abhrajit.hackernewsreader.data.DetailColumns;
 
@@ -36,6 +42,7 @@ import me.abhrajit.hackernewsreader.data.DetailColumns;
  * for the code structure
  */
 public class HackerCursorAdapter extends HackerRecyclerViewAdapter<HackerCursorAdapter.ViewHolder> {
+    final String URL_KEY="INTENT_URL";
 
     private static Context mContext;
 
@@ -55,16 +62,38 @@ public class HackerCursorAdapter extends HackerRecyclerViewAdapter<HackerCursorA
 
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder, final Cursor cursor) {
+        String colors[]={"#E91E63","#9C27B0","#2196F3","#8BC34A"};
+        Random r = new Random();
+        int i1 = r.nextInt(4);
         if (cursor != null) {
             String rank=cursor.getString(cursor.getColumnIndex(DetailColumns.RANK));
-          viewHolder.headLine.setText(rank+"##"+cursor.getString(cursor.getColumnIndex(DetailColumns.TITLE)));
+            String title=cursor.getString(cursor.getColumnIndex(DetailColumns.TITLE));
+          viewHolder.headLine.setText(title);
+            viewHolder.urlText.setText(cursor.getString(cursor.getColumnIndex(DetailColumns.URL)));
+            viewHolder.rankText.setText("#"+rank);
            String imageUrl = cursor.getString(cursor.getColumnIndex(DetailColumns.IMAGE_URL));
             if (!imageUrl.equals("invalid")) {
                 System.out.println(imageUrl);
                 Picasso.with(mContext).load(imageUrl).into(viewHolder.newsImage);
+                viewHolder.floatingText.setText("");
             }else{
-                Picasso.with(mContext).load(R.drawable.filler_image).into(viewHolder.newsImage);
+                viewHolder.floatingText.setText(title.substring(0,1));
+                viewHolder.newsImage.setImageBitmap(null);
+                viewHolder.newsImage.setBackgroundColor(Color.parseColor(colors[i1]));
             }
+
+
+            viewHolder.cardView.setOnClickListener(new View.OnClickListener() {
+
+                public void onClick(View v) {
+                    TextView textUrl=(TextView) v.findViewById(R.id.text_url);
+                    String url=textUrl.getText().toString();
+                    Intent intent = new Intent(mContext, DetailView.class);
+                    intent.putExtra(URL_KEY, url);
+                    mContext.startActivity(intent);
+
+                }
+            });
 
         }
     }
@@ -79,15 +108,24 @@ public class HackerCursorAdapter extends HackerRecyclerViewAdapter<HackerCursorA
             implements View.OnClickListener {
         public final TextView headLine;
         public final ImageView newsImage;
+        public final TextView floatingText;
+        public final TextView urlText;
+        public final TextView rankText;
+        public final CardView cardView;
 
         public ViewHolder(View itemView) {
             super(itemView);
             headLine = (TextView) itemView.findViewById(R.id.text_view);
             newsImage = (ImageView) itemView.findViewById(R.id.cardImagePoster);
+            floatingText=(TextView) itemView.findViewById(R.id.floating_Text);
+            urlText=(TextView) itemView.findViewById(R.id.text_url);
+            rankText=(TextView) itemView.findViewById(R.id.rank_text);
+            cardView=(CardView) itemView.findViewById(R.id.card_view);
         }
 
         @Override
         public void onClick(View v) {
+
 
         }
     }

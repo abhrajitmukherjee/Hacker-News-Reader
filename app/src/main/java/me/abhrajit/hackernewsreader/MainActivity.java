@@ -68,6 +68,8 @@ public class MainActivity extends AppCompatActivity implements  android.app.Load
         getLoaderManager().initLoader(CURSOR_LOADER_ID, null, this);
         mCursorAdapter = new HackerCursorAdapter(this, null);
         recyclerView.setAdapter(mCursorAdapter);
+
+
     }
     @Override
     public void onResume() {
@@ -80,7 +82,12 @@ public class MainActivity extends AppCompatActivity implements  android.app.Load
         return new CursorLoader(
                 this,
                 HackerNewsProvider.NewsFeed.CONTENT_URI,
-                new String[]{DetailColumns._ID,DetailColumns.TITLE,DetailColumns.NEWS_ID,DetailColumns.IMAGE_URL,DetailColumns.RANK},
+                new String[]{DetailColumns._ID,
+                        DetailColumns.TITLE,
+                        DetailColumns.NEWS_ID,
+                        DetailColumns.IMAGE_URL,
+                        DetailColumns.RANK,
+                        DetailColumns.URL},
                 null,
                 null,
                 DetailColumns.RANK+ " ASC");
@@ -90,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements  android.app.Load
     public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor cursor) {
         mCursorAdapter.swapCursor(cursor);
         mCursor = cursor;
+
     }
 
     @Override

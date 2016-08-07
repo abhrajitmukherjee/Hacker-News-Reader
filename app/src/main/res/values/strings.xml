@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">HackerNewsReader</string>
+    <string name="title_activity_detail_view">DetailView</string>
+    <string name="connectivity">Connectivity Issue!</string>
 </resources>

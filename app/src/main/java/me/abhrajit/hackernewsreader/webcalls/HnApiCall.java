@@ -23,6 +23,7 @@ import android.content.OperationApplicationException;
 import android.database.Cursor;
 import android.os.RemoteException;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import me.abhrajit.hackernewsreader.R;
 import me.abhrajit.hackernewsreader.data.DetailColumns;
 import me.abhrajit.hackernewsreader.data.HackerNewsProvider;
 import okhttp3.OkHttpClient;
@@ -61,7 +63,13 @@ public class HnApiCall {
                  response = client.newCall(request).execute();
                 text=response.body().string();
             }catch(IOException e){
-                Log.e(LOGTAG,e.toString());
+                Log.d(LOGTAG,e.toString());
+                CharSequence error = mContext.getString(R.string.connectivity);
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(mContext, error, duration);
+                toast.show();
+                return;
             }
          top500= Arrays.asList(text.substring(1,text.length()-1).split(","));
 
@@ -155,7 +163,6 @@ public class HnApiCall {
         cursor=mContext.getContentResolver().query(
                 HackerNewsProvider.NewsFeed.CONTENT_URI,
                 new String[]{DetailColumns.NEWS_ID,DetailColumns.IMAGE_URL},null,null,null);
-        cursor.moveToFirst();
         while(cursor.moveToNext()){
             ids.add(cursor.getString(0));
             imgUrls.add(cursor.getString(1));
@@ -191,7 +198,7 @@ public class HnApiCall {
                     cv,
                     DetailColumns.NEWS_ID+"='"+newsId+"'",
                     null);
-        System.out.println("Rank updated for "+newsId+" to "+rank+1);
+        System.out.println("Rank updated for "+newsId+" to "+rank);
 
     }
 

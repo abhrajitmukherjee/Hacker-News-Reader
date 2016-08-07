@@ -8,27 +8,71 @@
         android:layout_height="wrap_content"
         card_view:cardCornerRadius="3dp"
         card_view:cardElevation="2dp"
-        android:layout_margin="16dp"
+        android:layout_marginTop="8dp"
         card_view:cardUseCompatPadding="true">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <ImageView
-            android:id="@+id/cardImagePoster"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/filler_image"
-      />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/cardImagePoster"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:scaleType="centerCrop"
+                android:src="@color/colorPrimary"
+                />
+            <TextView
+                android:layout_centerInParent="true"
+                android:id="@+id/floating_Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="100sp"
+
+                android:textColor="@android:color/white"/>
+
+            <TextView
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:id="@+id/rank_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="24sp"
+                android:text="#12"
+                android:background="#80000000"
+                android:textColor="@android:color/white"/>
+
+
+        </RelativeLayout>
+
     <TextView
         android:id="@+id/text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20dp"
+        android:textSize="16sp"
         android:ellipsize="end"
-        android:lines="2"/>
+        android:textStyle="bold"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_vertical_margin"
+        android:textColor="@android:color/black"
+        android:paddingRight="60dp"
+/>
+        <TextView
+            android:id="@+id/text_url"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:ellipsize="end"
+            android:paddingLeft="@dimen/activity_vertical_margin"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:textColor="#616161"
+            android:paddingRight="75dp"
+            android:lines="1"/>
     </LinearLayout>
+
+
 
     </android.support.v7.widget.CardView>
 
