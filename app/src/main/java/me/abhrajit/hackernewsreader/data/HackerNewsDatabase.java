@@ -27,21 +27,24 @@ import net.simonvt.schematic.annotation.Table;
 @Database(version = HackerNewsDatabase.VERSION)
 public final class HackerNewsDatabase {
 
-    public static final int VERSION = 9;
+    public static final int VERSION = 20;
 
 
     @Table(DetailColumns.class) public static final String NEWS_FEED = "newsfeed";
 
     @OnCreate public static void onCreate(Context context, SQLiteDatabase db) {
+        db.execSQL("DROP TABLE IF EXISTS " + NEWS_FEED);
         db.execSQL(
                     "CREATE TABLE " + NEWS_FEED +"("+
                             DetailColumns._ID + " INTEGER PRIMARY KEY, " +
                             DetailColumns.BY+" TEXT,"+
+                            DetailColumns.RANK+" INTEGER,"+
                             DetailColumns.NEWS_ID+" TEXT," +
                             DetailColumns.SCORE+" TEXT," +
                             DetailColumns.TIME+" TEXT," +
                             DetailColumns.TYPE+" TEXT," +
                             DetailColumns.TITLE+" TEXT," +
+                            DetailColumns.IMAGE_URL+" TEXT," +
                             DetailColumns.URL+" TEXT);"
           );
     }
@@ -49,8 +52,6 @@ public final class HackerNewsDatabase {
     @OnUpgrade
     public static void onUpgrade(Context context, SQLiteDatabase db, int oldVersion,
                                  int newVersion) {
-
-        db.execSQL("DROP TABLE IF EXISTS " + NEWS_FEED);
         onCreate(context,db);
     }
 

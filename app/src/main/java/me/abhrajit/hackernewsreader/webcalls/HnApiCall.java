@@ -17,6 +17,7 @@ package me.abhrajit.hackernewsreader.webcalls;
 
 
 import android.content.ContentProviderOperation;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.OperationApplicationException;
 import android.database.Cursor;
@@ -37,9 +38,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-/**
- * Created by abhrajit on 8/6/16.
- */
 public class HnApiCall {
     ArrayList<ContentProviderOperation> batchOperations = new ArrayList<>();
     final String LOGTAG=HnApiCall.class.getName();
@@ -70,17 +68,26 @@ public class HnApiCall {
            Log.v(LOGTAG,top500.get(0)+" "+top500.get(top500.size()-1));
 
     }
-    private void parseJson(String Json){
+    private void parseJson(String Json, int rank){
         JSONObject json=null;
         try{
             json=new JSONObject(Json);
-            System.out.println(json.getString("url"));
+            String url=json.getString("url");
+
+            String imageUrl=(new LinkToImage(url)).getMainImage();
+            if (imageUrl==null){
+                imageUrl="invalid";
+            };
+            System.out.println();
             System.out.println(json.getString("title"));
             ContentProviderOperation.Builder builder = ContentProviderOperation.newInsert(
                     HackerNewsProvider.NewsFeed.CONTENT_URI);
             builder.withValue(DetailColumns.URL,json.getString("url"));
             builder.withValue(DetailColumns.NEWS_ID,json.getString("id"));
             builder.withValue(DetailColumns.TITLE,json.getString("title"));
+            builder.withValue(DetailColumns.IMAGE_URL,imageUrl);
+            builder.withValue(DetailColumns.RANK,rank);
+
             batchOperations.add(builder.build());
 
 
@@ -99,12 +106,24 @@ public class HnApiCall {
         ArrayList<String> newsDbList=getNewsIds();
 
         int c=0;
-        for (String item : top500) {
+        for (int i=0;i<top500.size();i++) {
+            String item=top500.get(i);
             c++;
-            if (c>10) break;
+            if(c==50){
+                break;
+            }
+
             if(newsDbList.contains(item)){
                 System.out.println("Skipped"+item);
+
+                updateRank(item,i+1);
                 continue;
+
+            }
+
+            if (c%3==0) {
+                writeToDB();
+                batchOperations=new ArrayList<>();
 
             }
             String url="https://hacker-news.firebaseio.com/v0/item/"+item+".json";
@@ -117,11 +136,11 @@ public class HnApiCall {
             }catch(IOException e){
                 Log.e(LOGTAG,e.toString());
             }
-            parseJson(text);
+            parseJson(text,i+1);
 
         }
 
-        writeToDB();
+
 
 
 
@@ -131,16 +150,20 @@ public class HnApiCall {
 
     public ArrayList<String> getNewsIds(){
         ArrayList<String> ids=new ArrayList<>();
+        ArrayList<String> imgUrls=new ArrayList<>();
         Cursor cursor;
         cursor=mContext.getContentResolver().query(
                 HackerNewsProvider.NewsFeed.CONTENT_URI,
-                new String[]{DetailColumns.NEWS_ID},null,null,null);
+                new String[]{DetailColumns.NEWS_ID,DetailColumns.IMAGE_URL},null,null,null);
         cursor.moveToFirst();
         while(cursor.moveToNext()){
             ids.add(cursor.getString(0));
+            imgUrls.add(cursor.getString(1));
+
         }
         cursor.close();
         System.out.println(ids.toString());
+        System.out.println(imgUrls.toString());
 
         return ids;
 
@@ -157,5 +180,19 @@ public class HnApiCall {
         }
     }
 
+
+    public void updateRank(String newsId,int rank){
+        ContentValues cv=new ContentValues();
+        cv.put(DetailColumns.RANK,rank);
+
+
+            mContext.getContentResolver().update(
+                    HackerNewsProvider.NewsFeed.CONTENT_URI,
+                    cv,
+                    DetailColumns.NEWS_ID+"='"+newsId+"'",
+                    null);
+        System.out.println("Rank updated for "+newsId+" to "+rank+1);
+
+    }
 
 }

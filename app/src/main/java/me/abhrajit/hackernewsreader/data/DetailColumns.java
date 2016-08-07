@@ -28,6 +28,8 @@ public class DetailColumns {
     @DataType(DataType.Type.TEXT)
     public static final String BY = "by";
     @DataType(DataType.Type.TEXT)
+    public static final String RANK = "news_rank";
+    @DataType(DataType.Type.TEXT)
     public static final String NEWS_ID = "news_id";
     @DataType(DataType.Type.TEXT)
     public static final String SCORE = "score";
@@ -39,5 +41,7 @@ public class DetailColumns {
     public static final String TYPE = "type";
     @DataType(DataType.Type.TEXT)
     public static final String URL = "url";
+    @DataType(DataType.Type.TEXT)
+    public static final String IMAGE_URL = "image_url";
 
 }
