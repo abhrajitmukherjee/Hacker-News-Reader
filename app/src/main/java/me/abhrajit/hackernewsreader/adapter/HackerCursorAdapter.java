@@ -30,8 +30,6 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.Random;
-
 import me.abhrajit.hackernewsreader.DetailView;
 import me.abhrajit.hackernewsreader.R;
 import me.abhrajit.hackernewsreader.data.DetailColumns;
@@ -63,8 +61,9 @@ public class HackerCursorAdapter extends HackerRecyclerViewAdapter<HackerCursorA
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder, final Cursor cursor) {
         String colors[]={"#E91E63","#9C27B0","#2196F3","#8BC34A"};
-        Random r = new Random();
-        int i1 = r.nextInt(4);
+
+      //  Random r = new Random();
+        int i1 = cursor.getPosition()%4;
         if (cursor != null) {
             String rank=cursor.getString(cursor.getColumnIndex(DetailColumns.RANK));
             String title=cursor.getString(cursor.getColumnIndex(DetailColumns.TITLE));
@@ -72,8 +71,9 @@ public class HackerCursorAdapter extends HackerRecyclerViewAdapter<HackerCursorA
             viewHolder.urlText.setText(cursor.getString(cursor.getColumnIndex(DetailColumns.URL)));
             viewHolder.rankText.setText("#"+rank);
            String imageUrl = cursor.getString(cursor.getColumnIndex(DetailColumns.IMAGE_URL));
-            if (!imageUrl.equals("invalid")) {
+            if (!(imageUrl.equals("invalid")||imageUrl.equals(""))) {
                 System.out.println(imageUrl);
+                viewHolder.newsImage.setBackgroundColor(Color.WHITE);
                 Picasso.with(mContext).load(imageUrl).into(viewHolder.newsImage);
                 viewHolder.floatingText.setText("");
             }else{

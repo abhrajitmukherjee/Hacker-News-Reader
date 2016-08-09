@@ -2,4 +2,7 @@
     <string name="app_name">HackerNewsReader</string>
     <string name="title_activity_detail_view">DetailView</string>
     <string name="connectivity">Connectivity Issue!</string>
+    <string name="no_of_grid">1</string>
+    <string name="action_share">Share Fab Button</string>
+
 </resources>

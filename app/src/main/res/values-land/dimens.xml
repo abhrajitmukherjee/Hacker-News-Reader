@@ -5,9 +5,8 @@
     <dimen name="half_margin">8dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="card_height">300dp</dimen>
-    <dimen name="card_text_right_pad">75dp</dimen>
-    <dimen name="main_layout_width">-1dp</dimen>
-    <dimen name="custom_margin">0dp</dimen>
-    <dimen name="card_margin">8dp</dimen>
-    <dimen name="card_margin_left_right">0dp</dimen>
+    <dimen name="card_text_right_pad">60dp</dimen>
+    <dimen name="custom_margin">16dp</dimen>
+    <dimen name="card_margin">4dp</dimen>
+    <dimen name="card_margin_left_right">4dp</dimen>
 </resources>

@@ -21,7 +21,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.google.android.gms.gcm.GcmNetworkManager;
@@ -60,22 +60,32 @@ public class MainActivity extends AppCompatActivity implements  android.app.Load
                 .build();
         GcmNetworkManager.getInstance(this).schedule(periodicTask);
 
-        Intent mServiceIntent = new Intent(this, NewsIntentService.class);
-        startService(mServiceIntent);
+        int noOfGrid=Integer.parseInt(getString(R.string.no_of_grid));
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new GridLayoutManager(this,noOfGrid ));
         getLoaderManager().initLoader(CURSOR_LOADER_ID, null, this);
         mCursorAdapter = new HackerCursorAdapter(this, null);
         recyclerView.setAdapter(mCursorAdapter);
 
 
     }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        Intent mServiceIntent = new Intent(this, NewsIntentService.class);
+        startService(mServiceIntent);
+    }
+
     @Override
     public void onResume() {
         super.onResume();
+
         getLoaderManager().restartLoader(CURSOR_LOADER_ID, null, this);
+
     }
+
 
     @Override
     public android.content.Loader<Cursor> onCreateLoader(int i, Bundle bundle) {

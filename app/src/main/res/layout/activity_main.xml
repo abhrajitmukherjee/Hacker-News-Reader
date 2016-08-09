@@ -4,10 +4,14 @@
     xmlns:fab="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:layout_marginLeft="@dimen/custom_margin"
+    android:layout_marginRight="@dimen/custom_margin"
     >
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
+        android:minHeight="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />

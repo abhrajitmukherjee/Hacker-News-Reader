@@ -113,13 +113,20 @@ public class HnApiCall {
         setTop500();
         ArrayList<String> newsDbList=getNewsIds();
 
+        ContentValues cv=new ContentValues();
+        cv.put(DetailColumns.RANK,2000);
+
+
+        mContext.getContentResolver().update(
+                HackerNewsProvider.NewsFeed.CONTENT_URI,
+                cv,
+                null,
+                null);
+
         int c=0;
         for (int i=0;i<top500.size();i++) {
             String item=top500.get(i);
             c++;
-            if(c==50){
-                break;
-            }
 
             if(newsDbList.contains(item)){
                 System.out.println("Skipped"+item);
@@ -129,7 +136,7 @@ public class HnApiCall {
 
             }
 
-            if (c%3==0) {
+            if (c%1==0) {
                 writeToDB();
                 batchOperations=new ArrayList<>();
 
