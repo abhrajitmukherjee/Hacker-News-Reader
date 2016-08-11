@@ -16,6 +16,7 @@ package me.abhrajit.hackernewsreader.adapter;
     limitations under the License.
 */
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -25,6 +26,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -33,6 +35,7 @@ import com.squareup.picasso.Picasso;
 import me.abhrajit.hackernewsreader.DetailView;
 import me.abhrajit.hackernewsreader.R;
 import me.abhrajit.hackernewsreader.data.DetailColumns;
+import me.abhrajit.hackernewsreader.data.HackerNewsProvider;
 
 /**
  * Credit to skyfishjy gist:
@@ -67,9 +70,19 @@ public class HackerCursorAdapter extends HackerRecyclerViewAdapter<HackerCursorA
         if (cursor != null) {
             String rank=cursor.getString(cursor.getColumnIndex(DetailColumns.RANK));
             String title=cursor.getString(cursor.getColumnIndex(DetailColumns.TITLE));
+            String fav=cursor.getString(cursor.getColumnIndex(DetailColumns.FAVORITE));
           viewHolder.headLine.setText(title);
             viewHolder.urlText.setText(cursor.getString(cursor.getColumnIndex(DetailColumns.URL)));
             viewHolder.rankText.setText("#"+rank);
+            System.out.println("Favorite="+fav);
+            if (fav.equals("N")){
+                viewHolder.buttonLike.setText("Like Me");
+            }else
+            {
+                viewHolder.buttonLike.setText("Liked");
+            }
+            viewHolder.buttonLike.setTag(cursor.getPosition());
+
            String imageUrl = cursor.getString(cursor.getColumnIndex(DetailColumns.IMAGE_URL));
             if (!(imageUrl.equals("invalid")||imageUrl.equals(""))) {
                 System.out.println(imageUrl);
@@ -95,6 +108,39 @@ public class HackerCursorAdapter extends HackerRecyclerViewAdapter<HackerCursorA
                 }
             });
 
+
+            viewHolder.buttonLike.setOnClickListener(new View.OnClickListener() {
+
+                public void onClick(View v) {
+                    Cursor cursor1 = getCursor();
+
+                    Button btn=(Button) v.findViewById(R.id.card_like_button);
+                    int position=(Integer) btn.getTag();
+                    cursor1.moveToPosition(position);
+                    String newsId=cursor1.getString(cursor.getColumnIndex(DetailColumns.NEWS_ID));
+                    String fav=cursor1.getString(cursor.getColumnIndex(DetailColumns.FAVORITE));
+                    ContentValues cv=new ContentValues();
+                    if (fav.equals("Y")){
+                        cv.put(DetailColumns.FAVORITE,"N");
+                    }else{
+                        cv.put(DetailColumns.FAVORITE,"Y");
+                    }
+
+
+                    mContext.getContentResolver().update(
+                            HackerNewsProvider.NewsFeed.CONTENT_URI,
+                            cv,
+                            DetailColumns.NEWS_ID+"='"+newsId+"'",
+                            null);
+
+
+
+                }
+
+
+            }
+            );
+
         }
     }
 
@@ -112,6 +158,7 @@ public class HackerCursorAdapter extends HackerRecyclerViewAdapter<HackerCursorA
         public final TextView urlText;
         public final TextView rankText;
         public final CardView cardView;
+        public final Button buttonLike;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -121,6 +168,7 @@ public class HackerCursorAdapter extends HackerRecyclerViewAdapter<HackerCursorA
             urlText=(TextView) itemView.findViewById(R.id.text_url);
             rankText=(TextView) itemView.findViewById(R.id.rank_text);
             cardView=(CardView) itemView.findViewById(R.id.card_view);
+            buttonLike=(Button) itemView.findViewById(R.id.card_like_button);
         }
 
         @Override

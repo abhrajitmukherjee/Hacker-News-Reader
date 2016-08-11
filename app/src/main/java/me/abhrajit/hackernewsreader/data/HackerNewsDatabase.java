@@ -27,7 +27,7 @@ import net.simonvt.schematic.annotation.Table;
 @Database(version = HackerNewsDatabase.VERSION)
 public final class HackerNewsDatabase {
 
-    public static final int VERSION = 20;
+    public static final int VERSION = 21;
 
 
     @Table(DetailColumns.class) public static final String NEWS_FEED = "newsfeed";
@@ -40,6 +40,8 @@ public final class HackerNewsDatabase {
                             DetailColumns.BY+" TEXT,"+
                             DetailColumns.RANK+" INTEGER,"+
                             DetailColumns.NEWS_ID+" TEXT," +
+                            DetailColumns.VALID+" TEXT," +
+                            DetailColumns.FAVORITE+" TEXT," +
                             DetailColumns.SCORE+" TEXT," +
                             DetailColumns.TIME+" TEXT," +
                             DetailColumns.TYPE+" TEXT," +

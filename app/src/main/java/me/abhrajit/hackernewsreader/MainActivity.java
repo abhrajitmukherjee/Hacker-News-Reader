@@ -20,9 +20,15 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.PeriodicTask;
@@ -34,10 +40,14 @@ import me.abhrajit.hackernewsreader.data.HackerNewsProvider;
 import me.abhrajit.hackernewsreader.service.NewsGcmService;
 import me.abhrajit.hackernewsreader.service.NewsIntentService;
 
-public class MainActivity extends AppCompatActivity implements  android.app.LoaderManager.LoaderCallbacks<Cursor> {
+public class MainActivity extends AppCompatActivity
+        implements  android.app.LoaderManager.LoaderCallbacks<Cursor>,
+        NavigationView.OnNavigationItemSelectedListener
+{
     private int CURSOR_LOADER_ID=1;
     private Cursor mCursor;
     HackerCursorAdapter mCursorAdapter;
+    String mFilterCursor=null;
 
 
 
@@ -45,6 +55,19 @@ public class MainActivity extends AppCompatActivity implements  android.app.Load
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+//
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setHomeButtonEnabled(true);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
         long period = 3600L;
         long flex = 10L;
@@ -68,7 +91,45 @@ public class MainActivity extends AppCompatActivity implements  android.app.Load
         mCursorAdapter = new HackerCursorAdapter(this, null);
         recyclerView.setAdapter(mCursorAdapter);
 
+    }
 
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_camera) {    
+            mFilterCursor=null;
+            getLoaderManager().restartLoader(CURSOR_LOADER_ID, null, this);
+        } else if (id == R.id.nav_gallery) {
+            mFilterCursor=DetailColumns.FAVORITE+"='Y'";
+            getLoaderManager().restartLoader(CURSOR_LOADER_ID, null, this);
+
+        } else if (id == R.id.nav_slideshow) {
+
+        } else if (id == R.id.nav_manage) {
+
+        } else if (id == R.id.nav_share) {
+
+        } else if (id == R.id.nav_send) {
+
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     @Override
@@ -92,15 +153,12 @@ public class MainActivity extends AppCompatActivity implements  android.app.Load
         return new CursorLoader(
                 this,
                 HackerNewsProvider.NewsFeed.CONTENT_URI,
-                new String[]{DetailColumns._ID,
-                        DetailColumns.TITLE,
-                        DetailColumns.NEWS_ID,
-                        DetailColumns.IMAGE_URL,
-                        DetailColumns.RANK,
-                        DetailColumns.URL},
                 null,
+                mFilterCursor,
                 null,
                 DetailColumns.RANK+ " ASC");
+
+
     }
 
     @Override

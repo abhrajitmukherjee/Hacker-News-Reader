@@ -30,6 +30,10 @@ public class DetailColumns {
     @DataType(DataType.Type.TEXT)
     public static final String RANK = "news_rank";
     @DataType(DataType.Type.TEXT)
+    public static final String VALID = "valid";
+    @DataType(DataType.Type.TEXT)
+    public static final String FAVORITE = "favorite";
+    @DataType(DataType.Type.TEXT)
     public static final String NEWS_ID = "news_id";
     @DataType(DataType.Type.TEXT)
     public static final String SCORE = "score";

@@ -93,6 +93,8 @@ public class HnApiCall {
             builder.withValue(DetailColumns.URL,json.getString("url"));
             builder.withValue(DetailColumns.NEWS_ID,json.getString("id"));
             builder.withValue(DetailColumns.TITLE,json.getString("title"));
+            builder.withValue(DetailColumns.VALID,"Y");
+            builder.withValue(DetailColumns.FAVORITE,"N");
             builder.withValue(DetailColumns.IMAGE_URL,imageUrl);
             builder.withValue(DetailColumns.RANK,rank);
 
@@ -114,7 +116,7 @@ public class HnApiCall {
         ArrayList<String> newsDbList=getNewsIds();
 
         ContentValues cv=new ContentValues();
-        cv.put(DetailColumns.RANK,2000);
+        cv.put(DetailColumns.VALID,"N");
 
 
         mContext.getContentResolver().update(
@@ -159,8 +161,8 @@ public class HnApiCall {
 
         }
 
-
-
+        String deleteWhere=DetailColumns.VALID+"='N'";
+        mContext.getContentResolver().delete(HackerNewsProvider.NewsFeed.CONTENT_URI,deleteWhere,null);
 
 
         return null;
@@ -202,6 +204,7 @@ public class HnApiCall {
     public void updateRank(String newsId,int rank){
         ContentValues cv=new ContentValues();
         cv.put(DetailColumns.RANK,rank);
+        cv.put(DetailColumns.VALID,"Y");
 
 
             mContext.getContentResolver().update(
