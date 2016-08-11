@@ -128,6 +128,10 @@ public class HnApiCall {
             String item=top500.get(i);
             c++;
 
+            if(c==10){
+                break;
+            }
+
             if(newsDbList.contains(item)){
                 System.out.println("Skipped"+item);
 

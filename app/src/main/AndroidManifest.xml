@@ -44,6 +44,19 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="me.abhrajit.hackernewsreader.MainActivity" />
         </activity>
+
+        <receiver android:name=".widget.HNWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/hnwidget_info" />
+        </receiver>
+
+        <service android:name=".widget.WidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
     </application>
 
 </manifest>

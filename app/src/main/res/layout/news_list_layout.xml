@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/news_list_layout"
+    android:layout_marginBottom="@dimen/activity_vertical_margin">
+    <TextView
+        android:id="@+id/widget_text_rank"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:background="@color/colorPrimaryLight2"
+        android:textColor="@android:color/black"
+        android:textSize="24sp"
+        android:padding="@dimen/half_margin"
+        android:gravity="center_vertical"
+        android:text="#1"
+        />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_vertical_margin"
+        android:layout_marginRight="@dimen/activity_vertical_margin"
+        android:orientation="vertical">
+    <TextView
+        android:id="@+id/widget_text_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+
+        android:text="HeloHelHeloHeloHeloHeloHeloHeloHeloHeloHeloHeloo"
+        />
+        <TextView
+            android:id="@+id/widget_text_url"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@android:color/darker_gray"
+            android:text="Helo"/>
+    </LinearLayout>
+
+
+</LinearLayout>

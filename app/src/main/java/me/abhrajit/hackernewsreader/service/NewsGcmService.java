@@ -16,13 +16,17 @@ package me.abhrajit.hackernewsreader.service;
 */
 
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import com.google.android.gms.gcm.GcmTaskService;
 import com.google.android.gms.gcm.TaskParams;
 
 import me.abhrajit.hackernewsreader.webcalls.HnApiCall;
+import me.abhrajit.hackernewsreader.widget.HNWidget;
 
 public class NewsGcmService extends GcmTaskService {
     Context mContext;
@@ -38,6 +42,14 @@ public class NewsGcmService extends GcmTaskService {
         if (mContext==null) mContext=this;
         HnApiCall api=new HnApiCall(mContext);
         api.getNews();
+
+//Calling the widget intent
+        Intent intent = new Intent(mContext.getApplicationContext(), HNWidget.class);
+        intent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
+        int ids[] = AppWidgetManager.getInstance(mContext.getApplicationContext()).getAppWidgetIds(
+                new ComponentName(mContext.getApplicationContext(), HNWidget.class));
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+        mContext.sendBroadcast(intent);
 
 
         return 0;
