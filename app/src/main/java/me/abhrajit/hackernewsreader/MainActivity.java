@@ -110,16 +110,13 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {    
+        if (id == R.id.nav_trending) {
             mFilterCursor=null;
             getLoaderManager().restartLoader(CURSOR_LOADER_ID, null, this);
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_bookmark) {
             mFilterCursor=DetailColumns.FAVORITE+"='Y'";
             getLoaderManager().restartLoader(CURSOR_LOADER_ID, null, this);
 
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
 

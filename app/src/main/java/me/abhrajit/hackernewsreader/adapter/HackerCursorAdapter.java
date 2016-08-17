@@ -26,8 +26,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -76,12 +76,14 @@ public class HackerCursorAdapter extends HackerRecyclerViewAdapter<HackerCursorA
             viewHolder.rankText.setText("#"+rank);
             System.out.println("Favorite="+fav);
             if (fav.equals("N")){
-                viewHolder.buttonLike.setText("Like Me");
+                viewHolder.imageBookmark.setImageResource(R.drawable.ic_bookmark_secondary_24dp);
+                viewHolder.textBookmark.setTextColor(mContext.getResources().getColor(R.color.colorGray));
             }else
             {
-                viewHolder.buttonLike.setText("Liked");
+                viewHolder.imageBookmark.setImageResource(R.drawable.ic_bookmark_primary_24dp);
+                viewHolder.textBookmark.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
             }
-            viewHolder.buttonLike.setTag(cursor.getPosition());
+            viewHolder.layoutBookmark.setTag(cursor.getPosition());
 
            String imageUrl = cursor.getString(cursor.getColumnIndex(DetailColumns.IMAGE_URL));
             if (!(imageUrl.equals("invalid")||imageUrl.equals(""))) {
@@ -109,12 +111,11 @@ public class HackerCursorAdapter extends HackerRecyclerViewAdapter<HackerCursorA
             });
 
 
-            viewHolder.buttonLike.setOnClickListener(new View.OnClickListener() {
+            viewHolder.layoutBookmark.setOnClickListener(new View.OnClickListener() {
 
                 public void onClick(View v) {
                     Cursor cursor1 = getCursor();
-
-                    Button btn=(Button) v.findViewById(R.id.card_like_button);
+                    LinearLayout btn=(LinearLayout) v.findViewById(R.id.bookmark);
                     int position=(Integer) btn.getTag();
                     cursor1.moveToPosition(position);
                     String newsId=cursor1.getString(cursor.getColumnIndex(DetailColumns.NEWS_ID));
@@ -158,7 +159,9 @@ public class HackerCursorAdapter extends HackerRecyclerViewAdapter<HackerCursorA
         public final TextView urlText;
         public final TextView rankText;
         public final CardView cardView;
-        public final Button buttonLike;
+        public final LinearLayout layoutBookmark;
+        public final ImageView imageBookmark;
+        public final TextView textBookmark;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -168,7 +171,9 @@ public class HackerCursorAdapter extends HackerRecyclerViewAdapter<HackerCursorA
             urlText=(TextView) itemView.findViewById(R.id.text_url);
             rankText=(TextView) itemView.findViewById(R.id.rank_text);
             cardView=(CardView) itemView.findViewById(R.id.card_view);
-            buttonLike=(Button) itemView.findViewById(R.id.card_like_button);
+            layoutBookmark=(LinearLayout) itemView.findViewById(R.id.bookmark);
+            imageBookmark=(ImageView) itemView.findViewById(R.id.image_bookmark);
+            textBookmark=(TextView) itemView.findViewById(R.id.text_bookmark);
         }
 
         @Override

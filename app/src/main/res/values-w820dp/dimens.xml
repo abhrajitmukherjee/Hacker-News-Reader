@@ -14,6 +14,6 @@
     <dimen name="card_margin">4dp</dimen>
     <dimen name="detail_card_margin">150dp</dimen>
     <dimen name="card_margin_left_right">4dp</dimen>
-
+    <dimen name="card_elevation">3dp</dimen>
 
 </resources>

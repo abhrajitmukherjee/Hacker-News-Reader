@@ -4,7 +4,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="half_margin">8dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
-    <dimen name="card_height">300dp</dimen>
+    <dimen name="card_height">450dp</dimen>
     <dimen name="card_text_right_pad">75dp</dimen>
     <dimen name="main_layout_width">-1dp</dimen>
     <dimen name="custom_margin">0dp</dimen>
@@ -18,4 +18,5 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     <dimen name="widget_margin">8dp</dimen>
     <dimen name="nav_header_vertical_spacing">16dp</dimen>
     <dimen name="nav_header_height">160dp</dimen>
+    <dimen name="card_elevation">3dp</dimen>
 </resources>

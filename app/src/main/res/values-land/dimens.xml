@@ -9,4 +9,6 @@
     <dimen name="custom_margin">16dp</dimen>
     <dimen name="card_margin">4dp</dimen>
     <dimen name="card_margin_left_right">4dp</dimen>
+    <dimen name="card_elevation">3dp</dimen>
+
 </resources>

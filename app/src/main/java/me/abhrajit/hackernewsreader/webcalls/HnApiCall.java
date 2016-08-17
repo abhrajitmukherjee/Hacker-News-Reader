@@ -130,9 +130,9 @@ public class HnApiCall {
             String item=top500.get(i);
             c++;
 
-            if(c==10){
-                break;
-            }
+//            if(c==10){
+//                break;
+//            }
 
             if(newsDbList.contains(item)){
                 System.out.println("Skipped"+item);
@@ -161,7 +161,7 @@ public class HnApiCall {
 
         }
 
-        String deleteWhere=DetailColumns.VALID+"='N'";
+        String deleteWhere=DetailColumns.VALID+"='N' and "+DetailColumns.FAVORITE+"='N'";
         mContext.getContentResolver().delete(HackerNewsProvider.NewsFeed.CONTENT_URI,deleteWhere,null);
 
 

@@ -4,4 +4,6 @@
     <dimen name="card_margin">8dp</dimen>
     <dimen name="card_margin_left_right">8dp</dimen>
     <dimen name="card_height">400dp</dimen>
+
+
 </resources>
