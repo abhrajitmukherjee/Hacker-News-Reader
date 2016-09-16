@@ -44,6 +44,8 @@ import me.abhrajit.hackernewsreader.data.HackerNewsProvider;
  */
 public class HackerCursorAdapter extends HackerRecyclerViewAdapter<HackerCursorAdapter.ViewHolder> {
     final String URL_KEY="INTENT_URL";
+    final String IMG_URL_KEY="IMAGE_URL";
+    final String TITLE="URL_TITLE";
 
     private static Context mContext;
 
@@ -69,12 +71,12 @@ public class HackerCursorAdapter extends HackerRecyclerViewAdapter<HackerCursorA
         int i1 = cursor.getPosition()%4;
         if (cursor != null) {
             String rank=cursor.getString(cursor.getColumnIndex(DetailColumns.RANK));
-            String title=cursor.getString(cursor.getColumnIndex(DetailColumns.TITLE));
+            final String title=cursor.getString(cursor.getColumnIndex(DetailColumns.TITLE));
             String fav=cursor.getString(cursor.getColumnIndex(DetailColumns.FAVORITE));
           viewHolder.headLine.setText(title);
             viewHolder.urlText.setText(cursor.getString(cursor.getColumnIndex(DetailColumns.URL)));
             viewHolder.rankText.setText("#"+rank);
-            System.out.println("Favorite="+fav);
+        //    System.out.println("Favorite="+fav);
             if (fav.equals("N")){
                 viewHolder.imageBookmark.setImageResource(R.drawable.ic_bookmark_secondary_24dp);
                 viewHolder.textBookmark.setTextColor(mContext.getResources().getColor(R.color.colorGray));
@@ -87,13 +89,15 @@ public class HackerCursorAdapter extends HackerRecyclerViewAdapter<HackerCursorA
 
            String imageUrl = cursor.getString(cursor.getColumnIndex(DetailColumns.IMAGE_URL));
             if (!(imageUrl.equals("invalid")||imageUrl.equals(""))) {
-                System.out.println(imageUrl);
+              //  System.out.println(imageUrl);
                 viewHolder.newsImage.setBackgroundColor(Color.WHITE);
                 Picasso.with(mContext).load(imageUrl).into(viewHolder.newsImage);
+                viewHolder.newsImage.setTag(imageUrl);
                 viewHolder.floatingText.setText("");
             }else{
                 viewHolder.floatingText.setText(title.substring(0,1));
                 viewHolder.newsImage.setImageBitmap(null);
+                viewHolder.newsImage.setTag("invalid");
                 viewHolder.newsImage.setBackgroundColor(Color.parseColor(colors[i1]));
             }
 
@@ -103,8 +107,12 @@ public class HackerCursorAdapter extends HackerRecyclerViewAdapter<HackerCursorA
                 public void onClick(View v) {
                     TextView textUrl=(TextView) v.findViewById(R.id.text_url);
                     String url=textUrl.getText().toString();
+                    ImageView iv= (ImageView) v.findViewById(R.id.cardImagePoster);
+                    String imageUrl=(String)iv.getTag();
                     Intent intent = new Intent(mContext, DetailView.class);
                     intent.putExtra(URL_KEY, url);
+                    intent.putExtra(IMG_URL_KEY, imageUrl);
+                    intent.putExtra(TITLE,title);
                     mContext.startActivity(intent);
 
                 }

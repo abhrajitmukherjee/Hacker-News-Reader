@@ -73,7 +73,7 @@ public class HnApiCall {
             }
          top500= Arrays.asList(text.substring(1,text.length()-1).split(","));
 
-           Log.v(LOGTAG,top500.get(0)+" "+top500.get(top500.size()-1));
+      //     Log.v(LOGTAG,top500.get(0)+" "+top500.get(top500.size()-1));
 
     }
     private void parseJson(String Json, int rank){
@@ -86,8 +86,8 @@ public class HnApiCall {
             if (imageUrl==null){
                 imageUrl="invalid";
             };
-            System.out.println();
-            System.out.println(json.getString("title"));
+        //    System.out.println();
+        //    System.out.println(json.getString("title"));
             ContentProviderOperation.Builder builder = ContentProviderOperation.newInsert(
                     HackerNewsProvider.NewsFeed.CONTENT_URI);
             builder.withValue(DetailColumns.URL,json.getString("url"));
@@ -135,7 +135,7 @@ public class HnApiCall {
 //            }
 
             if(newsDbList.contains(item)){
-                System.out.println("Skipped"+item);
+           //     System.out.println("Skipped"+item);
 
                 updateRank(item,i+1);
                 continue;
@@ -182,8 +182,8 @@ public class HnApiCall {
 
         }
         cursor.close();
-        System.out.println(ids.toString());
-        System.out.println(imgUrls.toString());
+     //   System.out.println(ids.toString());
+     //   System.out.println(imgUrls.toString());
 
         return ids;
 
@@ -212,7 +212,7 @@ public class HnApiCall {
                     cv,
                     DetailColumns.NEWS_ID+"='"+newsId+"'",
                     null);
-        System.out.println("Rank updated for "+newsId+" to "+rank);
+       // System.out.println("Rank updated for "+newsId+" to "+rank);
 
     }
 

@@ -4,12 +4,12 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="half_margin">8dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
-    <dimen name="card_height">450dp</dimen>
-    <dimen name="card_text_right_pad">75dp</dimen>
+    <dimen name="card_height">300dp</dimen>
+    <dimen name="card_text_right_pad">50dp</dimen>
     <dimen name="main_layout_width">-1dp</dimen>
     <dimen name="custom_margin">0dp</dimen>
     <dimen name="card_margin">8dp</dimen>
-    <dimen name="card_margin_left_right">0dp</dimen>
+    <dimen name="card_margin_left_right">8dp</dimen>
 
     <!--
 Refer to App Widget Documentation for margin information

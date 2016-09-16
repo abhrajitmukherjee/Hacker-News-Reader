@@ -28,8 +28,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Logger;
+import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.PeriodicTask;
 import com.google.android.gms.gcm.Task;
@@ -37,6 +42,7 @@ import com.google.android.gms.gcm.Task;
 import me.abhrajit.hackernewsreader.adapter.HackerCursorAdapter;
 import me.abhrajit.hackernewsreader.data.DetailColumns;
 import me.abhrajit.hackernewsreader.data.HackerNewsProvider;
+import me.abhrajit.hackernewsreader.service.AnalyticsApplication;
 import me.abhrajit.hackernewsreader.service.NewsGcmService;
 import me.abhrajit.hackernewsreader.service.NewsIntentService;
 
@@ -48,6 +54,7 @@ public class MainActivity extends AppCompatActivity
     private Cursor mCursor;
     HackerCursorAdapter mCursorAdapter;
     String mFilterCursor=null;
+    private Tracker mTracker;
 
 
 
@@ -55,6 +62,11 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        AnalyticsApplication application = (AnalyticsApplication) getApplication();
+        mTracker = application.getDefaultTracker();
+        Log.v("Default tracker",mTracker.toString());
+        GoogleAnalytics.getInstance(this).getLogger().setLogLevel(Logger.LogLevel.VERBOSE);
 //
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        getSupportActionBar().setHomeButtonEnabled(true);
@@ -90,6 +102,8 @@ public class MainActivity extends AppCompatActivity
         getLoaderManager().initLoader(CURSOR_LOADER_ID, null, this);
         mCursorAdapter = new HackerCursorAdapter(this, null);
         recyclerView.setAdapter(mCursorAdapter);
+
+
 
     }
 
@@ -132,13 +146,18 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onStart(){
         super.onStart();
+        mTracker.setScreenName("Main Screen");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
         Intent mServiceIntent = new Intent(this, NewsIntentService.class);
         startService(mServiceIntent);
+
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
+
 
         getLoaderManager().restartLoader(CURSOR_LOADER_ID, null, this);
 

@@ -31,6 +31,8 @@ import me.abhrajit.hackernewsreader.data.HackerNewsProvider;
 
 public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory {
     final String URL_KEY="INTENT_URL";
+    final String IMG_URL_KEY="IMAGE_URL";
+    final String TITLE="URL_TITLE";
 
     private static final String TAG = "WidgetDataProvider";
 
@@ -76,6 +78,8 @@ public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory
 
         Intent intent = new Intent(mContext, DetailView.class);
         intent.putExtra(URL_KEY,mCollection.get(position).get(1));
+        intent.putExtra(IMG_URL_KEY,mCollection.get(position).get(3));
+        intent.putExtra(TITLE,mCollection.get(position).get(0));
         view.setOnClickFillInIntent(R.id.news_list_layout, intent);
         return view;
     }
@@ -121,6 +125,7 @@ public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory
             lst.add(c.getString(c.getColumnIndex(DetailColumns.TITLE)));
             lst.add(c.getString(c.getColumnIndex(DetailColumns.URL)));
             lst.add(c.getString(c.getColumnIndex(DetailColumns.RANK)));
+            lst.add(c.getString(c.getColumnIndex(DetailColumns.IMAGE_URL)));
             mCollection.add(lst);
             c.moveToNext();
         }
