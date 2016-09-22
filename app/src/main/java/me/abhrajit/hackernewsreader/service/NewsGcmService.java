@@ -21,10 +21,13 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.gcm.GcmTaskService;
 import com.google.android.gms.gcm.TaskParams;
 
+import me.abhrajit.hackernewsreader.R;
+import me.abhrajit.hackernewsreader.webcalls.ConnectivityCheck;
 import me.abhrajit.hackernewsreader.webcalls.HnApiCall;
 import me.abhrajit.hackernewsreader.widget.HNWidget;
 
@@ -38,6 +41,20 @@ public class NewsGcmService extends GcmTaskService {
     }
     @Override
     public int onRunTask(TaskParams taskParams) {
+
+        ConnectivityCheck cCheck=new ConnectivityCheck(mContext);
+        if (!cCheck.isConnected()){
+
+            String text = mContext.getString(R.string.noInternet);
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(mContext, text, duration);
+            toast.show();
+
+            return -1;
+        }
+
+
         Log.v("test","test");
         if (mContext==null) mContext=this;
         HnApiCall api=new HnApiCall(mContext);

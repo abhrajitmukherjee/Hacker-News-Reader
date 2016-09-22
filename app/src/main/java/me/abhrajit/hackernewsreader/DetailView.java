@@ -1,11 +1,12 @@
 package me.abhrajit.hackernewsreader;
 
 import android.content.Intent;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -18,8 +19,11 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+
+import me.abhrajit.hackernewsreader.webcalls.ConnectivityCheck;
 
 public class DetailView extends AppCompatActivity {
     final String URL_KEY="INTENT_URL";
@@ -33,6 +37,17 @@ public class DetailView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
+        ConnectivityCheck cCheck=new ConnectivityCheck(this);
+        if (!cCheck.isConnected()){
+
+            String text = getString(R.string.noInternet);
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(this, text, duration);
+            toast.show();
+
+        }
+
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_detail_view);
         final ProgressBar Pbar=(ProgressBar) findViewById(R.id.pB1);
@@ -40,28 +55,38 @@ public class DetailView extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-       // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         CollapsingToolbarLayout colToolbar = (CollapsingToolbarLayout) findViewById(R.id.detail_collapsing);
         Intent intent=getIntent();
-        String url=intent.getStringExtra(URL_KEY);
+        final String url=intent.getStringExtra(URL_KEY);
         String imageUrl=intent.getStringExtra(IMG_URL_KEY);
         String urlTitle=intent.getStringExtra(TITLE);
         Log.v("IMAGE","-----IMAGE URL:---------"+imageUrl);
         ImageView iv=(ImageView)findViewById(R.id.photo);
         colToolbar.setTitle(urlTitle);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, url);
+                sendIntent.setType("text/plain");
+                startActivity(sendIntent);
+            }
+        });
+        ColorMatrix matrix = new ColorMatrix();
+        matrix.setSaturation(0);
+
+        ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+        iv.setColorFilter(filter);
         if (!url.equals("invalid")){
+
             Picasso.with(this).load(imageUrl).into(iv);
 
         }else
         {
-            iv.setImageBitmap(null);
+            Picasso.with(this).load(R.drawable.filler_image).into(iv);
         }
 
         WebView webView=(WebView)findViewById(R.id.web_view);
@@ -76,6 +101,8 @@ public class DetailView extends AppCompatActivity {
          //   sendIntent.putExtra(Intent.EXTRA_TEXT, url);
          //   sendIntent.setType("application/pdf");
             startActivity(sendIntent);
+            finish();
+
         }
         else{
             webView.loadUrl(url);

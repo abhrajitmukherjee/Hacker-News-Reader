@@ -6,4 +6,6 @@
     <color name="colorPrimaryLight">#E0E0E0</color>
     <color name="colorPrimaryLight2">#FFE0B2</color>
     <color name="colorGray">@android:color/darker_gray</color>
+
+    <color name="black_overlay">#66000000</color>
 </resources>

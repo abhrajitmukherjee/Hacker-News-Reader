@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">HackerNewsReader</string>
+    <string name="app_name">Hacker News Reader</string>
     <string name="title_activity_detail_view">DetailView</string>
     <string name="connectivity">Connectivity Issue!</string>
     <string name="no_of_grid">1</string>
@@ -8,5 +8,9 @@
     <string name="add_widget">Add widget</string>
     <string name="navigation_drawer_open">Open Navigation Drawer</string>
     <string name="navigation_drawer_close">Close Navigation Drawer</string>
+
+    <string name="title_activity_splash_screen">Hacker News Reader</string>
+    <string name="noInternet">No Connectivity!!</string>
+    <string name="nav_Selected">SELECTED</string>
 
 </resources>

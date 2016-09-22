@@ -29,7 +29,9 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
@@ -45,6 +47,7 @@ import me.abhrajit.hackernewsreader.data.HackerNewsProvider;
 import me.abhrajit.hackernewsreader.service.AnalyticsApplication;
 import me.abhrajit.hackernewsreader.service.NewsGcmService;
 import me.abhrajit.hackernewsreader.service.NewsIntentService;
+import me.abhrajit.hackernewsreader.webcalls.ConnectivityCheck;
 
 public class MainActivity extends AppCompatActivity
         implements  android.app.LoaderManager.LoaderCallbacks<Cursor>,
@@ -62,6 +65,30 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        int selected=-1;
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        Menu menu = navigationView.getMenu();
+        if (savedInstanceState != null) {
+            selected = savedInstanceState.getInt(getString(R.string.nav_Selected));
+            navigationView.getMenu().getItem(selected).setChecked(true);
+            onNavigationItemSelected(navigationView.getMenu().getItem(selected));
+
+        }else{
+            navigationView.getMenu().getItem(0).setChecked(true);
+        }
+
+        ConnectivityCheck cCheck=new ConnectivityCheck(this);
+        if (!cCheck.isConnected()){
+
+            String text = getString(R.string.noInternet);
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(this, text, duration);
+            toast.show();
+
+        }
+
+
 
         AnalyticsApplication application = (AnalyticsApplication) getApplication();
         mTracker = application.getDefaultTracker();
@@ -78,7 +105,7 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+
         navigationView.setNavigationItemSelectedListener(this);
 
         long period = 3600L;
@@ -128,15 +155,15 @@ public class MainActivity extends AppCompatActivity
             mFilterCursor=null;
             getLoaderManager().restartLoader(CURSOR_LOADER_ID, null, this);
         } else if (id == R.id.nav_bookmark) {
-            mFilterCursor=DetailColumns.FAVORITE+"='Y'";
+            mFilterCursor = DetailColumns.FAVORITE + "='Y'";
             getLoaderManager().restartLoader(CURSOR_LOADER_ID, null, this);
 
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
         }
+//        } else if (id == R.id.nav_share) {
+//
+//        } else if (id == R.id.nav_send) {
+//
+//        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -187,5 +214,21 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onLoaderReset(android.content.Loader<Cursor> loader) {
         mCursorAdapter.swapCursor(null);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        Menu menu = navigationView.getMenu();
+        int selected=-1;
+        for (int i = 0; i < menu.size(); i++) {
+            MenuItem item = menu.getItem(i);
+            if (item.isChecked()) {
+                selected=i;
+                break;
+            }
+        }
+        savedInstanceState.putInt(getString(R.string.nav_Selected),selected);
+        super.onSaveInstanceState(savedInstanceState);
     }
 }
