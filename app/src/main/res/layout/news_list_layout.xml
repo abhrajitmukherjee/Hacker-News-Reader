@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/news_list_layout"
-    android:layout_marginBottom="@dimen/activity_vertical_margin">
+>
     <TextView
         android:id="@+id/widget_text_rank"
         android:layout_width="wrap_content"
@@ -32,7 +32,7 @@
         android:maxLines="2"
         android:textColor="@android:color/black"
         android:textSize="16sp"
-
+        android:layout_marginTop="8dp"
         android:text="HeloHelHeloHeloHeloHeloHeloHeloHeloHeloHeloHeloo"
         />
         <TextView
