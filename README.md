@@ -17,6 +17,7 @@ In my quest to learn Android programming I joined [Udacity][3] Android Developer
 - GCM (Google Task Service)\- For periodic task to load data and keep the app news feed updated in backend.
 - Google Analytics\- To measure user activity to named screens
 
+More at: https://abhrajit.com/post/hacker-news-reader-facebook-style/
 
 
 [1]: https://news.ycombinator.com/news
