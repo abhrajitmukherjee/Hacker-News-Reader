@@ -1,6 +1,6 @@
+## Hacker News Reader- Facebook Style
 
-
-![Splash]('https://abhrajit.com/img/hn_app_splash.png')
+![Main App Image](https://abhrajit.com/img/hn_app_mobile_main.png)
 
 In my quest to learn Android programming I joined [Udacity][3] Android Developer Nanodegree Program and it culminated in a capstone project of choice. Being a frequent visitor of [Hacker News][1]. I decided to code a hacker news reader app with the styling of Facebook newsfeed. Will showcase the app here and elaborate on the image extraction logic.
 
